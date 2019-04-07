@@ -21,8 +21,8 @@ initMap = () => {
         zoom: 16,
         scrollWheelZoom: false
       });
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
-        mapboxToken: '<your MAPBOX API KEY HERE>',
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token=pk.eyJ1Ijoid2FzZWVtLW1hbnNvdXIiLCJhIjoiY2p1NHNzMWxvMHI3eDQwb2JubGU3bTE0cSJ9.IJ0R6WP7P4xbrtc9lVd2yA', {
+        mapboxToken: 'pk.eyJ1Ijoid2FzZWVtLW1hbnNvdXIiLCJhIjoiY2p1NHNzMWxvMHI3eDQwb2JubGU3bTE0cSJ9.IJ0R6WP7P4xbrtc9lVd2yA',
         maxZoom: 18,
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
           '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -84,11 +84,12 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   name.innerHTML = restaurant.name;
 
   const address = document.getElementById('restaurant-address');
-  address.innerHTML = restaurant.address;
+  address.innerHTML = `<i class="fas fa-map-marker-alt" aria-hidden="true"></i> ${restaurant.address}`;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
+  image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = restaurant.name;
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -99,7 +100,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
   // fill reviews
   fillReviewsHTML();
-}
+};
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
@@ -127,6 +128,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
+  title.id = 'reviews';
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
@@ -148,16 +150,30 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
+  const meta = document.createElement('div');
+  meta.className = 'review-meta';
   const name = document.createElement('p');
+  name.className = 'review-name';
   name.innerHTML = review.name;
-  li.appendChild(name);
+  meta.appendChild(name);
 
   const date = document.createElement('p');
+  date.className = 'review-date';
   date.innerHTML = review.date;
-  li.appendChild(date);
+  meta.appendChild(date);
+
+  li.appendChild(meta);
 
   const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
+  rating.className = 'review-rating';
+  rating.innerHTML = `<span>Rating | </span><span class="screen-reader-only">${review.rating}</span>`;
+  const rateEl = document.createElement('span');
+  for (let rate=0; rate<review.rating; rate++) {
+      // const rateEl = document.createElement('p');
+      rateEl.innerHTML += '<i class="fa fa-star" aria-hidden="true"></i>';
+      // rateEl.appendChild(el);
+  }
+  rating.appendChild(rateEl);
   li.appendChild(rating);
 
   const comments = document.createElement('p');
