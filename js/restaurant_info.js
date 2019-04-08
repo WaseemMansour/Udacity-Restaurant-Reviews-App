@@ -127,7 +127,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.id = 'reviews';
   title.innerHTML = 'Reviews';
   container.appendChild(title);
@@ -187,8 +187,9 @@ createReviewHTML = (review) => {
  * Add restaurant name to the breadcrumb navigation menu
  */
 fillBreadcrumb = (restaurant=self.restaurant) => {
-  const breadcrumb = document.getElementById('breadcrumb');
+  const breadcrumb = document.querySelector('#breadcrumb ul');
   const li = document.createElement('li');
+  li.setAttribute('aria-current', 'page');
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
 }
