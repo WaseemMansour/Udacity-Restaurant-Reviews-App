@@ -164,11 +164,9 @@ createRestaurantHTML = (restaurant) => {
   image.alt = restaurant.name;
   li.append(image);
 
-  const nameLink = document.createElement('a');
-  nameLink.innerHTML = `<h1>${restaurant.name}</h1>`;
   restaurantURL = DBHelper.urlForRestaurant(restaurant);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h3');
   name.innerHTML = `<a href="${restaurantURL}">${restaurant.name}</a>`;
   li.append(name);
 
